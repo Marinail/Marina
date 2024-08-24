@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Математичний квіз</title>
+</head>
+<body>
+    <script>
+        // Функція для генерації випадкового математичного виразу
+        function generateMathExpression() {
+            const operators = ['+', '-', '*', '/'];
+            const randomOperator = operators[Math.floor(Math.random() * operators.length)];
+            const num1 = Math.floor(Math.random() * 10) + 1; // Випадкове число від 1 до 10
+            const num2 = Math.floor(Math.random() * 10) + 1; // Випадкове число від 1 до 10
+
+            // Обробка оператора ділення для уникнення ділення на нуль
+            const expression = randomOperator === '/' && num2 === 0 
+                ? { expression: `${num1} / ${num2 + 1}`, answer: num1 / (num2 + 1) }
+                : { expression: `${num1} ${randomOperator} ${num2}`, answer: eval(`${num1} ${randomOperator} ${num2}`) };
+
+            return expression;
+        }
+
+        // Основна функція гри
+        function playQuiz() {
+            const maxAttempts = 5; // Максимальна кількість спроб
+            let correctAnswers = 0;
+            let incorrectAnswers = 0;
+
+            for (let i = 0; i < maxAttempts; i++) {
+                const { expression, answer } = generateMathExpression();
+                const userAnswer = parseFloat(prompt(`Який результат виразу: ${expression}?`));
+
+                if (userAnswer === null) {
+                    alert('Гру завершено.');
+                    break;
+                }
+
+                if (Math.abs(userAnswer - answer) < 0.01) {
+                    correctAnswers++;
+                    alert('Правильно!');
+                } else {
+                    incorrectAnswers++;
+                    alert(`Неправильно! Правильна відповідь: ${answer}`);
+                }
+            }
+
+            alert(`Гра завершена. Правильні відповіді: ${correctAnswers}, Неправильні відповіді: ${incorrectAnswers}`);
+        }
+
+        // Запуск гри
+        playQuiz();
+    </script>
+</body>
+</html>
